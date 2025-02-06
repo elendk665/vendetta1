@@ -1,0 +1,197 @@
+:root {
+            --primary: #E50914;
+            --dark: #0A0A0A;
+            --light: #FFFFFF;
+            --gold: #F5F5DC;
+            --content-bg: rgba(26, 26, 26, 0.85);
+            --timeline-bg: rgba(42, 42, 42, 0.8);
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+        }
+
+        .gradient-bg {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradients-container {
+            filter: blur(40px);
+            width: 100%;
+            height: 100%;
+        }
+
+        .g1, .g2, .g3, .g4, .g5 {
+            position: absolute;
+            mix-blend-mode: hard-light;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            opacity: 0.7;
+        }
+
+        .g1 { 
+            background: radial-gradient(circle at center, rgba(18, 113, 255, 0.8) 0, transparent 50%);
+            animation: moveVertical 30s ease infinite;
+        }
+        .g2 { 
+            background: radial-gradient(circle at center, rgba(107, 74, 255, 0.8) 0, transparent 50%);
+            animation: moveInCircle 20s reverse infinite;
+        }
+        .g3 { 
+            background: radial-gradient(circle at center, rgba(100, 100, 255, 0.8) 0, transparent 50%);
+            animation: moveInCircle 40s linear infinite;
+        }
+        .g4 { 
+            background: radial-gradient(circle at center, rgba(50, 160, 220, 0.8) 0, transparent 50%);
+            animation: moveHorizontal 40s ease infinite;
+        }
+        .g5 { 
+            background: radial-gradient(circle at center, rgba(80, 47, 122, 0.8) 0, transparent 50%);
+            animation: moveInCircle 20s ease infinite;
+        }
+
+        @keyframes moveVertical {
+            0% { transform: translateY(-50%); }
+            50% { transform: translateY(50%); }
+            100% { transform: translateY(-50%); }
+        }
+
+        @keyframes moveInCircle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes moveHorizontal {
+            0% { transform: translateX(-50%) translateY(-10%); }
+            50% { transform: translateX(50%) translateY(10%); }
+            100% { transform: translateX(-50%) translateY(-10%); }
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 2px solid var(--primary);
+            position: relative;
+        }
+
+        .logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--content-bg);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        /* Остальные стили остаются без изменений */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav a {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: var(--primary);
+        }
+
+        .history-image {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        h1, h2, h3 {
+            color: var(--gold);
+            margin: 1.5rem 0;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            padding: 1.5rem;
+            background: var(--timeline-bg);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .social-icons img {
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s;
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            .content-section {
+                padding: 1.5rem;
+            }
+            .contact-info {
+                gap: 1.5rem;
+            }
+        }

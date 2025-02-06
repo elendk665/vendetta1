@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+	.cyber-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, #0a0a2e 0%, #000 100%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .hologram-container {
+        position: relative;
+        width: 600px;
+        height: 200px;
+        perspective: 1000px;
+        margin-bottom: 50px;
+    }
+
+    .hologram-text {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transform-style: preserve-3d;
+        animation: hologramFloat 5s ease-in-out infinite;
+    }
+
+    .hologram-line {
+        position: relative;
+        font-size: 3.5em;
+        font-weight: 700;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, 
+            #ff003c 0%, 
+            #00f3ff 50%, 
+            #ff003c 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 20px rgba(255,0,60,0.5);
+        margin: 10px 0;
+        transform: translateZ(50px);
+    }
+
+    .hologram-glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, 
+            rgba(255,0,60,0.2) 0%, 
+            transparent 70%
+        );
+        filter: blur(50px);
+        animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    .cyber-track {
+        position: relative;
+        width: 600px;
+        height: 20px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            #ff003c 30%, 
+            #ff003c 70%, 
+            transparent 100%
+        );
+        opacity: 0.8;
+        clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
+        margin: 30px 0;
+    }
+
+    .cyber-car {
+        position: absolute;
+        width: 120px;
+        height: 60px;
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgNjAiPjxwYXRoIGQ9Ik0xMCAzMEgxMTBjLTIwIDAtMzAgMTAtMzAgMTBIMzBjLTEwIDAtMjAtMTAtMjAtMTBaIiBmaWxsPSIjZmYwMDNjIi8+PHBhdGggZD0iTTAgNDBoMTIwdjEwSDB6IiBmaWxsPSIjMzMzIi8+PHJlY3QgeD0iMTAiIHk9IjM1IiB3aWR0aD0iMjAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjMDAwIi8+PHJlY3QgeD0iOTAiIHk9IjM1IiB3aWR0aD0iMjAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjMDAwIi8+PC9zdmc+') center/cover;
+        filter: drop-shadow(0 0 15px #ff003c);
+        animation: carDrive 5s linear forwards;
+    }
+
+    .cyber-progress {
+        position: relative;
+        width: 400px;
+        height: 8px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .cyber-progress-bar {
+        position: absolute;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            #ff003c 0%, 
+            #00f3ff 50%, 
+            #ff003c 100%
+        );
+        width: 0%;
+        animation: progressFill 5s linear forwards;
+        box-shadow: 0 0 30px rgba(255,0,60,0.3);
+    }
+
+    .loading-time {
+        color: #fff;
+        font-size: 1.2em;
+        margin-top: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        animation: textGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes hologramFloat {
+        0%, 100% { transform: rotateX(10deg) rotateY(0deg) translateY(0); }
+        50% { transform: rotateX(10deg) rotateY(10deg) translateY(-20px); }
+    }
+
+    @keyframes carDrive {
+        0% { left: -120px; }
+        100% { left: calc(100% + 120px); }
+    }
+
+    @keyframes progressFill {
+        0% { width: 0%; }
+        100% { width: 100%; }
+    }
+
+    @keyframes glowPulse {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+    }
+
+    @keyframes textGlow {
+        0%, 100% { text-shadow: 0 0 10px #ff003c; }
+        50% { text-shadow: 0 0 20px #00f3ff; }
+    }
+	 body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+        }
+
+        .liquid-loader {
+            width: 120px;
+            height: 120px;
+            position: relative;
+        }
+
+        .drop {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 45% 55% 35% 65% / 40% 35% 65% 60%;
+            background: #00ff88;
+            animation: liquid-rotate 4s linear infinite;
+            filter: drop-shadow(0 0 12px #00ff8888);
+        }
+
+        .drop:nth-child(2) {
+            animation-delay: -1s;
+            background: #00ffff;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes liquid-rotate {
+            0% {
+                transform: rotate(0deg) scale(1);
+                border-radius: 45% 55% 35% 65% / 40% 35% 65% 60%;
+            }
+            50% {
+                transform: rotate(180deg) scale(1.2);
+                border-radius: 60% 40% 55% 45% / 65% 50% 50% 35%;
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+                border-radius: 45% 55% 35% 65% / 40% 35% 65% 60%;
+            }
+        }
+
+        .loading-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+	.button-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.button-container a {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 0 15px;
+    color: #03e9f4;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 4px;
+    overflow: hidden;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+}
+
+.button-container a:hover {
+    background: #03e9f4;
+    color: #050801;
+    box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 200px #03e9f4;
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+}
+
+/* Цветовые акценты для разных кнопок */
+.button-container a:nth-child(1) { filter: hue-rotate(270deg); }
+.button-container a:nth-child(2) { filter: hue-rotate(110deg); }
+.button-container a:nth-child(3) { filter: hue-rotate(180deg); }
+.button-container a:nth-child(4) { filter: hue-rotate(300deg); }
+.button-container a:nth-child(5) { filter: hue-rotate(60deg); }
+
+/* Анимационные элементы */
+.button-container a span {
+    position: absolute;
+    display: block;
+}
+
+.button-container a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #03e9f4);
+    animation: animate1 1s linear infinite;
+}
+
+.button-container a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #03e9f4);
+    animation: animate2 1s linear infinite;
+    animation-delay: 0.25s;
+}
+
+.button-container a span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #03e9f4);
+    animation: animate3 1s linear infinite;
+    animation-delay: 0.5s;
+}
+
+.button-container a span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #03e9f4);
+    animation: animate4 1s linear infinite;
+    animation-delay: 0.75s;
+}
+
+@keyframes animate1 {
+    0% { left: -100%; }
+    50%,100% { left: 100%; }
+}
+
+@keyframes animate2 {
+    0% { top: -100%; }
+    50%,100% { top: 100%; }
+}
+
+@keyframes animate3 {
+    0% { right: -100%; }
+    50%,100% { right: 100%; }
+}
+
+@keyframes animate4 {
+    0% { bottom: -100%; }
+    50%,100% { bottom: 100%; }
+}
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 90deg;
+            inherits: true;
+        }
+
+        @property --gradX {
+            syntax: '<percentage>';
+            initial-value: 50%;
+            inherits: true;
+        }
+
+        @property --gradY {
+            syntax: '<percentage>';
+            initial-value: 0%;
+            inherits: true;
+        }
+
+        :root {
+            --color-bg1: rgb(8, 10, 15);
+            --color-bg2: rgb(0, 17, 32);
+            --color1: 18, 113, 255;
+            --color2: 107, 74, 255;
+            --color3: 100, 100, 255;
+            --color4: 50, 160, 220;
+            --color5: 80, 47, 122;
+            --color-interactive: 140, 100, 255;
+            --circle-size: 80%;
+            --blending: hard-light;
+            --d: 5s;
+            --c1: rgba(168, 239, 255, 1);
+            --c2: rgba(168, 239, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            list-style: none;
+            text-decoration: none;
+            box-sizing: border-box;
+            color: #FFF;
+            background: transparent;
+            border: none;
+        }
+
+        html, body {
+            font-family: 'Dongle', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+		.logo {
+    margin-top: 20px;
+    border-radius: 50%; /* Закругляем края логотипа */
+    overflow: hidden; /* Скрываем части, выходящие за пределы круга */
+    width: 150px; /* Фиксированная ширина логотипа */
+    height: 150px; /* Фиксированная высота логотипа */
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.8); /* Легкое свечение вокруг логотипа */
+}
+
+.logo img {
+    width: 100%; /* Изображение займет всю ширину контейнера */
+    height: 100%; /* Изображение займет всю высоту контейнера */
+    object-fit: cover; /* Изображение будет обрезано, чтобы заполнить контейнер */
+}
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            background-color: #000000;
+            color: #ffffff;
+            text-align: center;
+			overflow-x: hidden;
+            overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+        }
+
+        .gradient-bg {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            overflow: hidden;
+            background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .gradients-container {
+            filter: url(#goo) blur(40px);
+            width: 100%;
+            height: 100%;
+        }
+
+        .g1, .g2, .g3, .g4, .g5 {
+            position: absolute;
+            mix-blend-mode: var(--blending);
+            width: var(--circle-size);
+            height: var(--circle-size);
+            top: calc(50% - var(--circle-size)/2);
+            left: calc(50% - var(--circle-size)/2);
+            opacity: 1;
+        }
+
+        .g1 {
+            background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%);
+            animation: moveVertical 30s ease infinite;
+        }
+
+        .g2 {
+            background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 50%);
+            transform-origin: calc(50% - 400px);
+            animation: moveInCircle 20s reverse infinite;
+        }
+
+        .g3 {
+            background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 50%);
+            transform-origin: calc(50% + 400px);
+            animation: moveInCircle 40s linear infinite;
+        }
+
+        .g4 {
+            background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 50%);
+            transform-origin: calc(50% - 200px);
+            animation: moveHorizontal 40s ease infinite;
+        }
+
+        .g5 {
+            background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 50%);
+            width: calc(var(--circle-size)*2);
+            height: calc(var(--circle-size)*2);
+            transform-origin: calc(50% - 800px) calc(50% + 200px);
+            animation: moveInCircle 20s ease infinite;
+        }
+
+        .interactive {
+            position: absolute;
+            background: radial-gradient(circle at center, rgba(var(--color-interactive), 0.8) 0, rgba(var(--color-interactive), 0) 50%);
+            mix-blend-mode: var(--blending);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        @keyframes moveVertical {
+            0% { transform: translateY(-50%); }
+            50% { transform: translateY(50%); }
+            100% { transform: translateY(-50%); }
+        }
+
+        @keyframes moveInCircle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes moveHorizontal {
+            0% { transform: translateX(-50%) translateY(-10%); }
+            50% { transform: translateX(50%) translateY(10%); }
+            100% { transform: translateX(-50%) translateY(-10%); }
+        }
+
+        /* Новая панель навигации */
+        .button-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .button-container a {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 0 15px;
+    color: #03e9f4;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 4px;
+    overflow: hidden;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+}
+
+.button-container a {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 0 15px;
+    color: #03e9f4;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 4px;
+    overflow: hidden;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+}
+
+.button-container a:hover {
+    background: #03e9f4;
+    color: #050801;
+    box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 200px #03e9f4;
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+}
+
+/* Цветовые акценты для разных кнопок */
+.button-container a:nth-child(1) { filter: hue-rotate(270deg); }
+.button-container a:nth-child(2) { filter: hue-rotate(110deg); }
+.button-container a:nth-child(3) { filter: hue-rotate(180deg); }
+.button-container a:nth-child(4) { filter: hue-rotate(300deg); }
+.button-container a:nth-child(5) { filter: hue-rotate(60deg); }
+
+/* Анимационные элементы */
+.button-container a span {
+    position: absolute;
+    display: block;
+}
+
+.button-container a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #03e9f4);
+    animation: animate1 1s linear infinite;
+}
+
+.button-container a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #03e9f4);
+    animation: animate2 1s linear infinite;
+    animation-delay: 0.25s;
+}
+
+.button-container a span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #03e9f4);
+    animation: animate3 1s linear infinite;
+    animation-delay: 0.5s;
+}
+
+.button-container a span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #03e9f4);
+    animation: animate4 1s linear infinite;
+    animation-delay: 0.75s;
+}
+        }
+
+        @keyframes animate1 {
+            0% { left: -100%; }
+            50%,100% { left: 100%; }
+        }
+
+        @keyframes animate2 {
+            0% { top: -100%; }
+            50%,100% { top: 100%; }
+        }
+
+        @keyframes animate3 {
+            0% { right: -100%; }
+            50%,100% { right: 100%; }
+        }
+
+        @keyframes animate4 {
+            0% { bottom: -100%; }
+            50%,100% { bottom: 100%; }
+        }
+
+        /* Анимация границ для фотографий */
+        .car-section img {
+            border: 3px solid transparent;
+            border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 30;
+            animation: borderRotate var(--d) linear infinite forwards;
+        }
+
+        @keyframes borderRotate {
+            100% {
+                --angle: 420deg;
+            }
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+        }
+
+        h1, h3 {
+            margin: 15px 0;
+        }
+
+        /*
+vars
+*/
+:root {
+		--carousel-transition-duration: 250ms;
+		--carousel-transition-ease: ease-out;
+		--carousel-bg-color-rgb: 0, 0, 0;
+		--carousel-shadow-color-rgb: 128, 128, 128;
+		--carousel-item-width: 11.5rem;
+		--carousel-item-height: 17.5rem;
+		--carousel-item-hover-effect: 1.075;
+		--carousel-item-reflection-blur: 0.25rem;
+		--carousel-item-empty-color-rgb: 255, 255, 255;
+		--carousel-item-glow-color-rgb: 255, 255, 255;
+		--carousel-item-glow-size: 5rem;
+		--carousel-diameter: 50rem;
+		--carousel-3d-perspective: 1000px;
+		--carousel-3d-perspective-origin: 50% 20%;
+		--carousel-control-button-width: 1.25rem;
+		--carousel-control-button-height: 4rem;
+		--carousel-control-color-rgb: 255, 255, 255;
+		--carousel-animation-duration: 25s;
+		--carousel-animation-play-state: running;
+		--carousel-direction-animation-play-state: paused;
+}
+
+/*
+global
+*/
+*, *::before, *::after {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		box-sizing: border-box;
+}
+
+*:focus {
+		outline: none;
+}
+
+a {
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+		-webkit-tap-highlight-color: transparent;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+}
+
+body {
+		 display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+header {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.carousel {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: auto;
+}
+
+/*
+carousel
+*/
+.carousel {
+		--_diameter: var(--carousel-diameter);
+		--_radius: calc(var(--_diameter) / 2);
+		--_item-width: var(--carousel-item-width);
+		--_item-height: var(--carousel-item-height);
+		perspective: var(--carousel-3d-perspective);
+		perspective-origin: var(--carousel-3d-perspective-origin);
+		width: var(--_diameter);
+		height: var(--_diameter);
+		/* border: 1px solid #ffffff; */
+}
+
+@media only screen and (max-width: 48rem) {
+		.carousel {
+				--_diameter: calc(var(--carousel-diameter) * 0.75);
+				--_item-width: calc(var(--carousel-item-width) * 0.75);
+				--_item-height: calc(var(--carousel-item-height) * 0.75);
+		}
+}
+
+@media only screen and (max-width: 32rem) {
+		.carousel {
+				--_diameter: calc(var(--carousel-diameter) * 0.6);
+				--_item-width: calc(var(--carousel-item-width) * 0.6);
+				--_item-height: calc(var(--carousel-item-height) * 0.6);
+		}
+}
+
+@media only screen and (max-width: 16rem) {
+		.carousel {
+				--_diameter: calc(var(--carousel-diameter) * 0.25);
+				--_item-width: calc(var(--carousel-item-width) * 0.25);
+				--_item-height: calc(var(--carousel-item-height) * 0.25);
+		}
+}
+
+.carousel .carousel-control-button {
+		--_width: var(--carousel-control-button-width);
+		--_height: var(--carousel-control-button-height);
+		z-index: 1;
+		width: var(--_width);
+		height: var(--_height);
+		background-color: rgb(var(--carousel-control-color-rgb));
+		opacity: 0.2;
+		transition: opacity var(--carousel-transition-duration) var(--carousel-transition-ease);
+		position: absolute;
+}
+.carousel .carousel-control-button:hover {
+		opacity: 0.4;
+}
+.carousel .carousel-control-button:has(input:checked) {
+		opacity: 0.8;
+}
+
+.carousel .carousel-control-button input {
+		-webkit-appearance: none;
+		appearance: none;
+		opacity: 0;
+		width: 100%;
+		height: 100%;
+		cursor: pointer;
+}
+
+.carousel .carousel-control-button.left {
+		clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
+		top: calc(var(--_radius) - var(--_height) / 2);
+		left: 0;
+}
+.carousel:has(.carousel-control-button.left input:checked) {
+		--carousel-direction-animation-play-state: running;
+}
+
+.carousel .carousel-control-button.right {
+		clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+		top: calc(var(--_radius) - var(--_height) / 2);
+		right: 0;
+}
+.carousel:has(.carousel-control-button.right input:checked) {
+		--carousel-direction-animation-play-state: paused;
+}
+
+.carousel .carousel-rotation-direction {
+		--_direction-animation-play-state: var(--carousel-direction-animation-play-state);
+		--_z: calc(var(--_radius) * -1);
+		transform: translateZ(var(--_z));
+		transform-style: preserve-3d;
+		animation: carousel-rotation-reverse calc(var(--carousel-animation-duration) / 2) reverse linear infinite var(--_direction-animation-play-state);
+		transition: all var(--carousel-transition-duration) var(--carousel-transition-ease);
+}
+
+@keyframes carousel-rotation-reverse {
+		from {transform: translateZ(var(--_z)) rotateY(0deg);}
+		to {transform: translateZ(var(--_z)) rotateY(360deg);}
+}
+
+@keyframes carousel-rotation-normal {
+		from {transform: rotateY(0deg);}
+		to {transform: rotateY(360deg);}
+}
+
+.carousel .carousel-item-wrapper {
+		transform-style: inherit;
+		width: inherit;
+		height: inherit;
+		list-style-type: none;
+		position: relative;
+		animation: carousel-rotation-normal var(--carousel-animation-duration) normal linear infinite var(--carousel-animation-play-state);
+		transition: all var(--carousel-transition-duration) var(--carousel-transition-ease);
+}
+
+.carousel .carousel-rotation-direction:has(.carousel-item:hover) {
+		--carousel-animation-play-state: paused;
+		--_direction-animation-play-state: paused;
+}
+
+.carousel .carousel-item {
+		--_width: var(--_item-width);
+		--_height: var(--_item-height);
+		--_theta-start: 0;
+		--_theta-length: calc(2 * 3.141592653589793);
+		--_segment: calc(var(--_theta-start) + var(--_index) / var(--_num-elements) * var(--_theta-length));
+		--_x: calc(var(--_radius) * cos(var(--_segment)));
+		--_y: 0;
+		--_z: calc(var(--_radius) * sin(var(--_segment)));
+		--_final-x: var(--_x);
+		--_final-y: var(--_y);
+		--_final-z: var(--_z);
+		--_rotation-y: atan2(var(--_x), var(--_z));
+		left: calc(var(--_radius) - var(--_item-width) / 2);
+		top: calc(var(--_radius) - var(--_item-height) / 2);
+		transform: translate3d(var(--_final-x), var(--_final-y), var(--_final-z));
+		transform-style: inherit;
+		width: var(--_width);
+		height: var(--_height);
+		box-shadow: 0 0 var(--carousel-item-glow-size) transparent;
+		animation: carousel-item-rotation-reverse calc(var(--carousel-animation-duration) / 2) reverse linear infinite var(--_direction-animation-play-state);
+		position: absolute;
+}
+
+@keyframes carousel-item-rotation-reverse {
+		from {transform: translate3d(var(--_final-x), var(--_final-y), var(--_final-z)) rotateY(360deg);}
+		to {transform: translate3d(var(--_final-x), var(--_final-y), var(--_final-z)) rotateY(0deg);}
+}
+
+@keyframes carousel-item-rotation-normal {
+		from {transform: rotateY(360deg);}
+		to {transform: rotateY(0deg);}
+}
+
+.carousel .carousel-item a {
+		display: block;
+		width: inherit;
+		height: inherit;
+		text-indent: -9999px;
+		background-color: rgba(var(--carousel-item-empty-color-rgb), 0.5);
+		background-image: var(--_image-url);
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+		perspective: var(--carousel-3d-perspective);
+		perspective-origin: var(--carousel-3d-perspective-origin);
+		transition: all var(--carousel-transition-duration) var(--carousel-transition-ease);
+		filter: grayscale(100%);
+		animation: carousel-item-rotation-normal var(--carousel-animation-duration) normal linear infinite var(--carousel-animation-play-state);
+		position: relative;
+}
+
+.carousel .carousel-item:hover a {
+		filter: grayscale(0%);
+		box-shadow: 0 0 var(--carousel-item-glow-size) rgb(var(--carousel-item-glow-color-rgb));
+}
+
+.carousel .carousel-item a::before {
+		content: '';
+		width: inherit;
+		height: inherit;
+		background-color: rgba(var(--carousel-item-empty-color-rgb), 0.5);
+		background-image: 
+				linear-gradient(to top, rgba(var(--carousel-bg-color-rgb), 0.25) 0%, rgba(var(--carousel-bg-color-rgb), 1.0) 75%), 
+				var(--_image-url);
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+		pointer-events: none;
+		top: calc(var(--carousel-item-reflection-blur) * -1);
+		left: 0;
+		filter: blur(var(--carousel-item-reflection-blur)) grayscale(100%);
+		transition: filter var(--carousel-transition-duration) var(--carousel-transition-ease);
+		transform-origin: center bottom;
+		transform: rotateX(90deg) rotateZ(180deg) rotateY(180deg);
+		position: absolute;
+}
+
+.carousel .carousel-item:hover a::before {
+		filter: blur(var(--carousel-item-reflection-blur)) grayscale(0%);
+} 
+
+.carousel .carousel-ground {
+		--_width: var(--_diameter);
+		--_height: var(--_diameter);
+		--_rotation: 90deg;
+		left: calc(var(--_radius) - var(--_width) / 2);
+		top: calc(var(--_radius) - var(--_height) / 2);
+		transform: rotateX(var(--_rotation)) translateZ(calc(var(--_item-height) / -2));
+		width: var(--_width);
+		height: var(--_height);
+		border-radius: 50%;
+		background: radial-gradient(rgba(var(--carousel-shadow-color-rgb), 0.75) 15% , rgba(var(--carousel-bg-color-rgb), 0) 60%);
+		opacity: 0.5;
+		transition: opacity var(--carousel-transition-duration) var(--carousel-transition-ease);
+		position: absolute;
+}
+
+.carousel .carousel-item-wrapper:has(.carousel-item:hover) .carousel-ground {
+		opacity: 0.75;
+}
+        }
+
+        img {
+            width: 700px;
+            height: 400px;
+            border-radius: 5px;
+        }
+
+        h2 a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        h2 a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icons img {
+            width: 32px;
+            height: 32px;
+            margin: 0 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.1);
+        }
+		/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .button-container a {
+        margin: 5px 0;
+        padding: 12px 20px;
+        font-size: 0.9em;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        padding: 0 15px;
+    }
+
+    h3 {
+        font-size: 1em;
+        padding: 0 15px;
+    }
+
+    .slider {
+        margin: 20px auto;
+        border-radius: 0;
+    }
+
+    .car-section img {
+        height: 300px;
+    }
+
+    .price-tag {
+        font-size: 1.2em;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .controls button {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+
+    .specs-grid {
+        grid-template-columns: 1fr;
+        margin: 15px;
+        padding: 10px;
+    }
+
+    .spec-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .spec-value {
+        text-align: left;
+        margin-top: 5px;
+    }
+
+    footer {
+        padding: 15px;
+    }
+
+    .social-icons img {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        width: 80px;
+        height: 80px;
+    }
+
+    .button-container a {
+        font-size: 0.8em;
+        letter-spacing: 2px;
+    }
+
+    .slider {
+        margin: 10px 0;
+    }
+
+    .car-section img {
+        height: 250px;
+    }
+
+    .price-tag {
+        font-size: 1em;
+        padding: 8px 15px;
+    }
+
+    .dots-container {
+        bottom: 10px;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* Оптимизация для больших экранов */
+@media (min-width: 1600px) {
+    .slider {
+        max-width: 1600px;
+    }
+    
+    .car-section img {
+        height: 800px;
+    }
+}
+
+/* Общие улучшения */
+.imgBx img {
+    max-width: 100%;
+    height: auto;
+}
+
+.slider-container {
+    touch-action: pan-y; /* Разрешаем вертикальный скролл */
+}
+		
+    </style>
+</head>
+<body>
+<div class="cyber-loader">
+    <div class="hologram-container">
+        <div class="hologram-glow"></div>
+        <div class="hologram-text">
+            <div class="hologram-line">Компания</div>
+            <div class="hologram-line">Vendetta</div>
+        </div>
+    </div>
+    
+    <div class="cyber-track">
+        <div class="cyber-car"></div>
+    </div>
+
+    <div class="cyber-progress">
+        <div class="cyber-progress-bar"></div>
+    </div>
+
+    <div class="loading-time">Загрузка: 5 секунд</div>
+</div>
+<div class="liquid-loader">
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="loading-text"></div>
+    </div>
+    <div class="gradient-bg">
+        
+            <filter id='noiseFilterBg'>
+                <feTurbulence type='fractalNoise' baseFrequency='0.6' stitchTiles='stitch' />
+            </filter>
+            <rect width='100%' height='100%' preserveAspectRatio="xMidYMid meet" filter='url(#noiseFilterBg)' />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="svgBlur">
+            <defs>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+                    <feBlend in="SourceGraphic" in2="goo" />
+                </filter>
+            </defs>
+        </svg>
+        <div class="gradients-container">
+            <div class="g1"></div>
+            <div class="g2"></div>
+            <div class="g3"></div>
+            <div class="g4"></div>
+            <div class="g5"></div>
+            <div class="interactive"></div>
+        </div>
+    </div>
+
+    <header>
+        <img src="images/logo.jpg" class="logo" alt="Логотип Vendetta">
+        <div class="button-container">
+            <a href="index.html"><span></span><span></span><span></span><span></span>ГЛАВНАЯ</a>
+            <a href="avto.html"><span></span><span></span><span></span><span></span>АВТОМОБИЛИ</a>
+            <a href="obrende.html"><span></span><span></span><span></span><span></span>О БРЕНДЕ</a>
+            <a href="men.html"><span></span><span></span><span></span><span></span>МЕНЮ</a>
+        </div>
+        <h1>МОДЕЛЬНЫЙ РЯД Vendetta</h1>
+        <h3>Компания Vendetta основана в 2025 году в сердце Италии любителями скорости и дизайна. Мы стремимся создать автомобили, которые не только впечатляют, но и превращают каждую поездку в незабываемое приключение.</h3>
+    </header>
+
+    <main>
+        <div class="carousel">
+
+		<div class="carousel-control-button left"><input type="radio" name="carousel-control-input"></div>
+		<div class="carousel-control-button right"><input type="radio" name="carousel-control-input" checked></div>
+
+		<div class="carousel-rotation-direction">
+
+				<ul class="carousel-item-wrapper" style="--_num-elements: 11">
+
+						<li class="carousel-item" style="--_index: 1; --_image-url: url('https://avatars.mds.yandex.net/i?id=d39658262dd28e2da8bce47884b40bd4da0e0051-3826599-images-thumbs&n=13')">
+                        <a href="raptor.html">Vendetta Raptor</a>
+                    </li>
+                    <li class="carousel-item" style="--_index: 2; --_image-url: url('https://avatars.mds.yandex.net/i?id=3266c630f01147d607949cbf513ae712_l-5292718-images-thumbs&n=13')">
+                        <a href="nomad.html">Vendetta Nomad</a>
+                    </li>
+                    <li class="carousel-item" style="--_index: 3; --_image-url: url('https://i.gaw.to/videos/stills/00/39/003911.jpg')">
+                        <a href="vortex.html">Vendetta Vortex</a>
+                    </li>
+                    <li class="carousel-item" style="--_index: 4; --_image-url: url('https://avtonovostidnya.ru/wp-content/uploads/2023/06/5528c0a0fcc93a48412c551b8bc3004f-e1687838042405-1920x1082.jpg')">
+                        <a href="F.html">Vendetta F</a>
+                    </li>
+                    <li class="carousel-item" style="--_index: 5; --_image-url: url('https://avatars.mds.yandex.net/get-vertis-journal/4220003/2022-Viritech-Apricale-1.jpg_1656051220255/orig')">
+                        <a href="S.html">Vendetta S</a>
+                    </li>
+						<li class="carousel-item" style="--_index: 6; --_image-url: url('https://www.samarskie-voditeli.ru/images_news/20160426/6098-760beaeb24e6c0f360acb190c9580862.jpg')">
+                        <a href="Santa.html" >Vendetta Santa</a>
+                    </li>
+                    <li class="carousel-item" style="--_index: 7; --_image-url: url('https://avatars.mds.yandex.net/i?id=0f1df3771de391ab2924b10eb9bff4c0_l-5016868-images-thumbs&n=13')">
+                        <a href="air.html" >Vendetta Air</a>
+                    </li>
+                    <li class="carousel-item" style="--_index: 8; --_image-url: url('https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_662b316b65753120e7de2305_662b317565753120e7de2793/scale_1200')">
+                        <a href="Big.html" >Vendetta Big</a>
+                    </li>
+                    <li class="carousel-item" style="--_index: 9; --_image-url: url('https://www.formacar.com/storage/images_news/00/44/96/65/evEJFLcw7Nz9.jpg')">
+                        <a href="Vort.html">Vort.html</a>
+                    </li>
+                    <li class="carousel-item" style="--_index: 10; --_image-url: url('https://kolesa-uploads.ru/-/fdce2fe8-6763-4286-a61d-b89bd17ddbe2/03.jpg')">
+                        <a href="Tex.html">Vendetta Tex</a>
+                    </li>
+						<li class="carousel-item" style="--_index: 11; --_image-url: url('https://motor.ru/imgs/2023/08/08/12/6095527/542e82a606bb831d63298085a22fccda18bbadd6.jpg')">
+                        <a href="sonata.html">Vendetta Sonata</a>
+                    </li>
+
+						<li class="carousel-ground"></li>
+
+				</ul>
+
+		</div>
+
+</div>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <div>
+                <p>Телефон: +7-555-555-55-55</p>
+                <p>Поддержка: 8-888-888-88-88</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="https://vk.com/feed" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/145/145813.png" alt="VK">
+            </a>
+            <a href="http://www.facebook.com.vn/" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook">
+            </a>
+            <a href="https://tiktok.com" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046126.png" alt="TikTok">
+            </a>
+        </div>
+        <p>© 2025 Vendetta. Все права защищены</p>
+    </footer>
+			<script>
+    window.addEventListener('load', function() {
+        const loader = document.querySelector('.cyber-loader');
+        
+        setTimeout(() => {
+            document.body.classList.add('cyber-loaded');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 1000);
+        }, 5000);
+    });
+</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const interBubble = document.querySelector('.interactive');
+            let curX = 0;
+            let curY = 0;
+            let tgX = 0;
+            let tgY = 0;
+
+            const move = () => {
+                curX += (tgX - curX) / 20;
+                curY += (tgY - curY) / 20;
+                interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+                requestAnimationFrame(move);
+            };
+
+            window.addEventListener('mousemove', (event) => {
+                tgX = event.clientX;
+                tgY = event.clientY;
+            });
+
+            move();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Space Defender 88</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * {
+            box-sizing: border-box;
+            touch-action: manipulation;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(45deg, #000 0%, #001 100%);
+            overflow: hidden;
+        }
+
+        #screen {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 600px;
+            max-height: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 3px solid #0ff;
+            box-shadow: 0 0 20px #0ff;
+        }
+
+        .scanlines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 255, 0.05) 0px,
+                rgba(0, 255, 255, 0.05) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .player {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #0ff, #0f8);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px #0ff;
+        }
+
+        .bullet {
+            position: absolute;
+            width: 4px;
+            height: 15px;
+            background: #ff0;
+            box-shadow: 0 0 10px #ff0;
+        }
+
+        .asteroid {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #888, #666);
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .asteroid.cracked {
+            background: linear-gradient(45deg, #666, #444);
+            box-shadow: 0 0 15px #fff;
+        }
+
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+            z-index: 1000;
+        }
+
+        .control-pad {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            opacity: 0.9;
+            touch-action: none;
+        }
+
+        .mobile-btn {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 3px solid #0ff;
+            border-radius: 50%;
+            color: #0ff;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 0 15px #0ff;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .mobile-btn:active {
+            background: rgba(0, 255, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-btn {
+                display: flex;
+            }
+        }
+
+        #power-bar {
+            width: 150px;
+            height: 10px;
+            background: rgba(255, 0, 0, 0.3);
+            margin-top: 5px;
+            border: 2px solid #f00;
+        }
+
+        #power-bar-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #f00, #ff0);
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="screen">
+            <div class="scanlines"></div>
+            <div id="hud">
+                <div>SCORE: <span id="score">00000</span></div>
+                <div>POWER: <div id="power-bar"><div id="power-bar-inner"></div></div></div>
+            </div>
+            <div class="player" id="player"></div>
+            <div class="control-pad">
+                <div class="mobile-btn" id="left-btn">←</div>
+                <div class="mobile-btn" id="shoot-btn">⏎</div>
+                <div class="mobile-btn" id="right-btn">→</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let playerX = 50;
+        let power = 100;
+        let score = 0;
+        let scoreMultiplier = 1;
+        let lastShot = 0;
+        let fireRate = 200;
+        let isMovingLeft = false;
+        let isMovingRight = false;
+        const player = document.getElementById('player');
+        const screen = document.getElementById('screen');
+        const moveSpeed = 5;
+
+        // Инициализация управления
+        function initControls() {
+            // Клавиатура
+            document.addEventListener('keydown', (e) => {
+                if(e.code === 'ArrowLeft') isMovingLeft = true;
+                if(e.code === 'ArrowRight') isMovingRight = true;
+                if(e.code === 'Space') shoot();
+            });
+
+            document.addEventListener('keyup', (e) => {
+                if(e.code === 'ArrowLeft') isMovingLeft = false;
+                if(e.code === 'ArrowRight') isMovingRight = false;
+            });
+
+            // Сенсорное управление
+            const leftBtn = document.getElementById('left-btn');
+            const rightBtn = document.getElementById('right-btn');
+            const shootBtn = document.getElementById('shoot-btn');
+
+            const handleTouchStart = (direction) => (e) => {
+                e.preventDefault();
+                if(direction === 'left') isMovingLeft = true;
+                if(direction === 'right') isMovingRight = true;
+            }
+
+            const handleTouchEnd = () => {
+                isMovingLeft = false;
+                isMovingRight = false;
+            }
+
+            leftBtn.addEventListener('touchstart', handleTouchStart('left'));
+            leftBtn.addEventListener('touchend', handleTouchEnd);
+            leftBtn.addEventListener('touchcancel', handleTouchEnd);
+
+            rightBtn.addEventListener('touchstart', handleTouchStart('right'));
+            rightBtn.addEventListener('touchend', handleTouchEnd);
+            rightBtn.addEventListener('touchcancel', handleTouchEnd);
+
+            shootBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                shoot();
+            });
+        }
+
+        // Игровой цикл
+        function gameLoop() {
+            if(isMovingLeft && playerX > 2) playerX -= moveSpeed;
+            if(isMovingRight && playerX < 98) playerX += moveSpeed;
+            
+            player.style.left = `calc(${playerX}% - 20px)`;
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Остальные функции остаются аналогичными предыдущей версии
+        // (создание астероидов, стрельба, столкновения и т.д.)
+        // ...
+
+        // Запуск игры
+        function startGame() {
+            initControls();
+            gameLoop();
+            createAsteroid();
+            play80sMelody();
+        }
+
+        // Запуск при первом клике/тапе
+        document.body.addEventListener('click', startGame, { once: true });
+        document.body.addEventListener('touchstart', startGame, { once: true });
+    </script>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Главная</title>
+    <style>
+	.cyber-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, #0a0a2e 0%, #000 100%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .hologram-container {
+        position: relative;
+        width: 600px;
+        height: 200px;
+        perspective: 1000px;
+        margin-bottom: 50px;
+    }
+
+    .hologram-text {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transform-style: preserve-3d;
+        animation: hologramFloat 5s ease-in-out infinite;
+    }
+
+    .hologram-line {
+        position: relative;
+        font-size: 3.5em;
+        font-weight: 700;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, 
+            #ff003c 0%, 
+            #00f3ff 50%, 
+            #ff003c 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 20px rgba(255,0,60,0.5);
+        margin: 10px 0;
+        transform: translateZ(50px);
+    }
+
+    .hologram-glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, 
+            rgba(255,0,60,0.2) 0%, 
+            transparent 70%
+        );
+        filter: blur(50px);
+        animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    .cyber-track {
+        position: relative;
+        width: 600px;
+        height: 20px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            #ff003c 30%, 
+            #ff003c 70%, 
+            transparent 100%
+        );
+        opacity: 0.8;
+        clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
+        margin: 30px 0;
+    }
+
+    .cyber-car {
+        position: absolute;
+        width: 120px;
+        height: 60px;
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgNjAiPjxwYXRoIGQ9Ik0xMCAzMEgxMTBjLTIwIDAtMzAgMTAtMzAgMTBIMzBjLTEwIDAtMjAtMTAtMjAtMTBaIiBmaWxsPSIjZmYwMDNjIi8+PHBhdGggZD0iTTAgNDBoMTIwdjEwSDB6IiBmaWxsPSIjMzMzIi8+PHJlY3QgeD0iMTAiIHk9IjM1IiB3aWR0aD0iMjAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjMDAwIi8+PHJlY3QgeD0iOTAiIHk9IjM1IiB3aWR0aD0iMjAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjMDAwIi8+PC9zdmc+') center/cover;
+        filter: drop-shadow(0 0 15px #ff003c);
+        animation: carDrive 5s linear forwards;
+    }
+
+    .cyber-progress {
+        position: relative;
+        width: 400px;
+        height: 8px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .cyber-progress-bar {
+        position: absolute;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            #ff003c 0%, 
+            #00f3ff 50%, 
+            #ff003c 100%
+        );
+        width: 0%;
+        animation: progressFill 5s linear forwards;
+        box-shadow: 0 0 30px rgba(255,0,60,0.3);
+    }
+
+    .loading-time {
+        color: #fff;
+        font-size: 1.2em;
+        margin-top: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        animation: textGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes hologramFloat {
+        0%, 100% { transform: rotateX(10deg) rotateY(0deg) translateY(0); }
+        50% { transform: rotateX(10deg) rotateY(10deg) translateY(-20px); }
+    }
+
+    @keyframes carDrive {
+        0% { left: -120px; }
+        100% { left: calc(100% + 120px); }
+    }
+
+    @keyframes progressFill {
+        0% { width: 0%; }
+        100% { width: 100%; }
+    }
+
+    @keyframes glowPulse {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+    }
+
+    @keyframes textGlow {
+        0%, 100% { text-shadow: 0 0 10px #ff003c; }
+        50% { text-shadow: 0 0 20px #00f3ff; }
+    }
+
+    body:not(.cyber-loaded) > :not(.cyber-loader) {
+        display: none !important;
+    }
+        /* Анимированный фон */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .gradient-bg {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradients-container {
+            filter: blur(40px);
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .g1, .g2, .g3, .g4, .g5 {
+            position: absolute;
+            mix-blend-mode: hard-light;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            opacity: 0.7;
+        }
+
+        .g1 { 
+            background: radial-gradient(circle at center, rgba(18, 113, 255, 0.8) 0, transparent 50%);
+            animation: moveVertical 30s ease infinite;
+        }
+        .g2 { 
+            background: radial-gradient(circle at center, rgba(107, 74, 255, 0.8) 0, transparent 50%);
+            animation: moveInCircle 20s reverse infinite;
+        }
+        .g3 { 
+            background: radial-gradient(circle at center, rgba(100, 100, 255, 0.8) 0, transparent 50%);
+            animation: moveInCircle 40s linear infinite;
+        }
+        .g4 { 
+            background: radial-gradient(circle at center, rgba(50, 160, 220, 0.8) 0, transparent 50%);
+            animation: moveHorizontal 40s ease infinite;
+        }
+        .g5 { 
+            background: radial-gradient(circle at center, rgba(80, 47, 122, 0.8) 0, transparent 50%);
+            animation: moveInCircle 20s ease infinite;
+        }
+
+        @keyframes moveVertical {
+            0% { transform: translateY(-50%); }
+            50% { transform: translateY(50%); }
+            100% { transform: translateY(-50%); }
+        }
+
+        @keyframes moveInCircle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes moveHorizontal {
+            0% { transform: translateX(-50%) translateY(-10%); }
+            50% { transform: translateX(50%) translateY(10%); }
+            100% { transform: translateX(-50%) translateY(-10%); }
+        }
+
+        /* Остальные стили */
+        .logo {
+            margin-top: 20px;
+			.photo-container {
+    /* Для добавления свечения к контейнеру */
+    border-radius: 50%; /* Закругляем края контейнера */
+    padding: 10px; /* Отступ для свечения */
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.7); /* Свечение по контурам */
+}
+        }
+
+        .button-container {
+            margin: 20px 0;
+        }
+.logo {
+    margin-top: 20px;
+    border-radius: 50%; /* Закругляем края логотипа */
+    overflow: hidden; /* Скрываем части, выходящие за пределы круга */
+    width: 150px; /* Фиксированная ширина логотипа */
+    height: 150px; /* Фиксированная высота логотипа */
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.8); /* Легкое свечение вокруг логотипа */
+}
+
+.logo img {
+    width: 100%; /* Изображение займет всю ширину контейнера */
+    height: 100%; /* Изображение займет всю высоту контейнера */
+    object-fit: cover; /* Изображение будет обрезано, чтобы заполнить контейнер */
+}
+        .button, .auto, .about {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover, .auto:hover, .about:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .box {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap; /* Чтобы карточки переносились на маленьких экранах */
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.3s ease;
+            width: 300px; /* Фиксированная ширина карточки */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .imgBx {
+            width: 100%;
+            height: 200px; /* Фиксированная высота для изображений */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .imgBx img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Чтобы изображение заполняло контейнер */
+        }
+
+        .details {
+            padding: 10px;
+            text-align: center;
+            flex-grow: 1; /* Чтобы текст занимал оставшееся пространство */
+        }
+
+        .price {
+            margin-top: auto; /* Цена будет внизу карточки */
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icons img {
+            width: 32px;
+            height: 32px;
+            margin: 0 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Управление фоном с помощью курсора */
+        .interactive {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(140, 100, 255, 0.8), transparent);
+            mix-blend-mode: hard-light;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        } 
+		@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+
+.button-container a {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 0 15px;
+    color: #03e9f4;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 4px;
+    overflow: hidden;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+}
+
+.button-container a:hover {
+    background: #03e9f4;
+    color: #050801;
+    box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 200px #03e9f4;
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+}
+
+/* Цветовые акценты для разных кнопок */
+.button-container a:nth-child(1) { filter: hue-rotate(270deg); }
+.button-container a:nth-child(2) { filter: hue-rotate(110deg); }
+.button-container a:nth-child(3) { filter: hue-rotate(180deg); }
+.button-container a:nth-child(4) { filter: hue-rotate(300deg); }
+.button-container a:nth-child(5) { filter: hue-rotate(60deg); }
+
+/* Анимационные элементы */
+.button-container a span {
+    position: absolute;
+    display: block;
+}
+
+.button-container a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #03e9f4);
+    animation: animate1 1s linear infinite;
+}
+
+.button-container a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #03e9f4);
+    animation: animate2 1s linear infinite;
+    animation-delay: 0.25s;
+}
+
+.button-container a span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #03e9f4);
+    animation: animate3 1s linear infinite;
+    animation-delay: 0.5s;
+}
+
+.button-container a span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #03e9f4);
+    animation: animate4 1s linear infinite;
+    animation-delay: 0.75s;
+}
+
+@keyframes animate1 {
+    0% { left: -100%; }
+    50%,100% { left: 100%; }
+}
+
+@keyframes animate2 {
+    0% { top: -100%; }
+    50%,100% { top: 100%; }
+}
+
+@keyframes animate3 {
+    0% { right: -100%; }
+    50%,100% { right: 100%; }
+}
+
+@keyframes animate4 {
+    0% { bottom: -100%; }
+    50%,100% { bottom: 100%; }
+}
+    </style>
+</head>
+<body>
+<div class="cyber-loader">
+    <div class="hologram-container">
+        <div class="hologram-glow"></div>
+        <div class="hologram-text">
+            <div class="hologram-line">Компания</div>
+            <div class="hologram-line">Vendetta</div>
+        </div>
+    </div>
+    
+    <div class="cyber-track">
+        <div class="cyber-car"></div>
+    </div>
+
+    <div class="cyber-progress">
+        <div class="cyber-progress-bar"></div>
+    </div>
+
+    <div class="loading-time">Загрузка: 5 секунд</div>
+</div>
+    <!-- Анимированный фон -->
+    <div class="gradient-bg">
+        <div class="gradients-container">
+            <div class="g1"></div>
+            <div class="g2"></div>
+            <div class="g3"></div>
+            <div class="g4"></div>
+            <div class="g5"></div>
+            <div class="interactive"></div> <!-- Интерактивный элемент -->
+        </div>
+    </div>
+
+    <div>
+        <img src="images/logo.jpg" class="logo" width="150" height="150 alt="Логотип Vendetta"><br>
+        <div class="button-container">
+    <a href="index.html">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        ГЛАВНАЯ
+    </a>
+    <a href="avto.html">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        АВТОМОБИЛИ
+    </a>
+    <a href="obrende.html">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        О БРЕНДЕ
+    </a>
+    <a href="men.html">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        МЕНЮ
+    </a>
+   
+</div>
+    </div>
+    <h1><b>Добро пожаловать в незабываемый мир Vendetta</b></h1>
+    <h3>
+        <p>Компания Vendetta основана в 2025 году в сердце Италии любителями скорости и дизайна. Мы стремимся создать автомобили, которые не только впечатляют, но и превращают каждую поездку в незабываемое приключение. Наша компания стала одним из крупнейших автомобильных производителей в мире, предлагая широкий ассортимент автомобилей различных классов и назначений.</p>
+        <p>Наши автомобили созданы для тех, кто ценит уникальность, мощность и стиль.</p>
+        <p>Каждый автомобиль Vendetta — это произведение искусства, созданное для вдохновения и восхищения.</p>
+    </h3>
+    <h2>Популярные модели</h2>
+    <div class="box">
+        <a href="url_raptor.html" class="card">
+            <div class="imgBx"> 
+                <img src="https://avatars.mds.yandex.net/i?id=8be0e2a422815a77d2a9062ae5bca04fa6019356-5339669-images-thumbs&n=13" alt="Vendetta Raptor"> 
+            </div> 
+            <div class="details"> 
+                <h2>Vendetta Raptor</h2> 
+            </div>
+            <div class="price">ОТ 3 969 000 ₽</div>
+        </a>
+        <a href="url_nomad.html" class="card">
+            <div class="imgBx">
+                <img src="https://images.drive.ru/i/0/5e1849c3ec05c4302e0000ac.jpg" alt="Vendetta Nomad">
+            </div>
+            <div class="details">
+                <h2>Vendetta Nomad</h2>
+            </div>
+            <div class="price">ОТ 6 969 000 ₽</div>
+        </a>
+        <a href="url_vortex.html" class="card">
+            <div class="imgBx">
+                <img src="https://www.zr.ru/d/story/ea/904938/006.jpg" alt="Vendetta Vortex">
+            </div>
+            <div class="details">
+                <h2>Vendetta Vortex</h2>
+            </div>
+            <div class="price">ОТ 9 969 000 ₽</div>
+        </a>
+    </div>
+    <h1><b>Почему мы рекомендуем вам Vendetta</b></h1>
+    <h3>
+        <p>Мы заботимся о будущем планеты. В нашей линейке представлены экологически чистые автомобили, которые соответствуют последним стандартам по выбросам.</p>
+        <p>Все наши машины оснащены последними достижениями в области автомобильных технологий, включая инновационные системы безопасности, мультимедиа и экономичные двигатели.</p>
+    </h3>
+    <footer>
+         <div class="contact-info">
+            <div>
+                <p>Телефон: +7-555-555-55-55</p>
+                <p>Поддержка: 8-888-888-88-88</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="https://vk.com/feed" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/145/145813.png" alt="VK">
+            </a>
+            <a href="http://www.facebook.com.vn/" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook">
+            </a>
+            <a href="https://tiktok.com" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046126.png" alt="TikTok">
+            </a>
+        </div>
+        <p>© 2025 Vendetta. Все права защищены</p>
+    </footer>
+	<script>
+    window.addEventListener('load', function() {
+        const loader = document.querySelector('.cyber-loader');
+        
+        setTimeout(() => {
+            document.body.classList.add('cyber-loaded');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 1000);
+        }, 5000);
+    });
+</script>
+
+    <script>
+        // Управление фоном с помощью курсора
+        document.addEventListener('DOMContentLoaded', () => {
+            const interBubble = document.querySelector('.interactive');
+            let curX = 0, curY = 0, tgX = 0, tgY = 0;
+
+            const move = () => {
+                curX += (tgX - curX) / 20;
+                curY += (tgY - curY) / 20;
+                interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+                requestAnimationFrame(move);
+            };
+
+            window.addEventListener('mousemove', (event) => {
+                tgX = event.clientX;
+                tgY = event.clientY;
+            });
+
+            move();
+        });
+
+    </script>
+</body>
+</html>

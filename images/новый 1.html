@@ -1,0 +1,190 @@
+<!DOCTYPE  html> < 
+html  lang="en"> < 
+head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Navigation Menu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+
+        :root {
+            --color-bg1: rgb(8, 10, 15);
+            --color-bg2: rgb(0, 17, 32);
+            --color-interactive: rgba(140, 100, 255, 0.8);
+            --circle-size: 80%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #FFF;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+            overflow: hidden;
+        }
+
+        .component {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .cn-button {
+            border: none;
+            border-radius: 50%;
+            background: #fff;
+            color: #52be7f;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 4.5em;
+            height: 4.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cn-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cn-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 10;
+            width: 30em;
+            height: 30em;
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+            transform: scale(0.1);
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .cn-wrapper.opened-nav {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .cn-wrapper ul {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cn-wrapper li {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10em; /* Adjusted size */
+            height: 10em; /* Adjusted size */
+            margin-top: -5em; /* Centering */
+            margin-left: -5em; /* Centering */
+            transform-origin: 50% 100%;
+            pointer-events: none;
+        }
+
+        .cn-wrapper li a {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); /* Triangle shape */
+            background: #429a67;
+            color: #fff;
+        }
+
+        .cn-wrapper li a:hover {
+            background: #52be7f;
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cn-wrapper li a span {
+            font-size: 0.8em; /* Smaller and more readable */
+            margin: auto;
+            display: block;
+            position: relative;
+            top: 40%; /* Adjusted for better positioning */
+        }
+
+        /* Positioning the menu items */
+        .opened-nav li:nth-child(1) { transform: rotate(0deg) translateY(-15em) rotate(0deg); }
+        .opened-nav li:nth-child(2) { transform: rotate(30deg) translateY(-15em) rotate(-30deg); }
+        .opened-nav li:nth-child(3) { transform: rotate(60deg) translateY(-15em) rotate(-60deg); }
+        .opened-nav li:nth-child(4) { transform: rotate(90deg) translateY(-15em) rotate(-90deg); }
+        .opened-nav li:nth-child(5) { transform: rotate(120deg) translateY(-15em) rotate(-120deg); }
+        .opened-nav li:nth-child(6) { transform: rotate(150deg) translateY(-15em) rotate(-150deg); }
+        .opened-nav li:nth-child(7) { transform: rotate(180deg) translateY(-15em) rotate(-180deg); }
+        .opened-nav li:nth-child(8) { transform: rotate(210deg) translateY(-15em) rotate(-210deg); }
+        .opened-nav li:nth-child(9) { transform: rotate(240deg) translateY(-15em) rotate(-240deg); }
+        .opened-nav li:nth-child(10) { transform: rotate(270deg) translateY(-15em) rotate(-270deg); }
+        .opened-nav li:nth-child(11) { transform: rotate(300deg) translateY(-15em) rotate(-300deg); }
+        .opened-nav li:nth-child(12) { transform: rotate(330deg) translateY(-15em) rotate(-330deg); }
+    </style>
+</head>
+<body>
+    <div class="component">
+        <button class="cn-button" id="cn-button">Menu</button>
+        <div class="cn-wrapper" id="cn-wrapper">
+            <ul>
+                <li><a href="index.html"><span>Home</span></a></li>
+                <li><a href="avto.html"><span>Auto</span></a></li>
+                <li><a href="obrende.html"><span>Company</span></a></li>
+                <li><a href="url_raptor.html"><span>Raptor</span></a></li>
+                <li><a href="url_nomad.html"><span>Nomad</span></a></li>
+                <li><a href="url_vortex.html"><span>Vortex</span></a></li>
+                <li><a href="F.html"><span>Vendetta F</span></a></li>
+                <li><a href="Santa.html"><span>Santa</span></a></li>
+                <li><a href="https://vk.com/feed"><span>VK</span></a></li>
+                <li><a href="http://www.facebook.com.vn/"><span>Facebook</span></a></li>
+                <li><a href="https://tiktok.com"><span>TikTok</span></a></li>
+                <li><a href="https://yandex.ru/maps/-/CHeF4KoE"><span>Factory</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var button = document.getElementById('cn-button'),
+                wrapper = document.getElementById('cn-wrapper');
+
+            var open = false;
+            button.addEventListener('click', handler, false);
+
+            function handler() {
+                if (!open) {
+                    this.innerHTML = "Close";
+                    wrapper.classList.add('opened-nav');
+                } else {
+                    this.innerHTML = "Menu";
+                    wrapper.classList.remove('opened-nav');
+                }
+                open = !open;
+            }
+        });
+    </script>
+</body>
+</html>

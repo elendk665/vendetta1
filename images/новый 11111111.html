@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 90deg;
+            inherits: true;
+        }
+
+        @property --gradX {
+            syntax: '<percentage>';
+            initial-value: 50%;
+            inherits: true;
+        }
+
+        @property --gradY {
+            syntax: '<percentage>';
+            initial-value: 0%;
+            inherits: true;
+        }
+
+        :root {
+            --color-bg1: rgb(8, 10, 15);
+            --color-bg2: rgb(0, 17, 32);
+            --color1: 18, 113, 255;
+            --color2: 107, 74, 255;
+            --color3: 100, 100, 255;
+            --color4: 50, 160, 220;
+            --color5: 80, 47, 122;
+            --color-interactive: 140, 100, 255;
+            --circle-size: 80%;
+            --blending: hard-light;
+            --d: 5s;
+            --c1: rgba(168, 239, 255, 1);
+            --c2: rgba(168, 239, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            list-style: none;
+            text-decoration: none;
+            box-sizing: border-box;
+            color: #FFF;
+            background: transparent;
+            border: none;
+        }
+
+        html, body {
+            font-family: 'Dongle', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            background-color: #000000;
+            color: #ffffff;
+            text-align: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        header, main, footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .gradient-bg {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            overflow: hidden;
+            background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .gradients-container {
+            filter: url(#goo) blur(40px);
+            width: 100%;
+            height: 100%;
+        }
+
+        .g1, .g2, .g3, .g4, .g5 {
+            position: absolute;
+            mix-blend-mode: var(--blending);
+            width: var(--circle-size);
+            height: var(--circle-size);
+            top: calc(50% - var(--circle-size)/2);
+            left: calc(50% - var(--circle-size)/2);
+            opacity: 1;
+        }
+
+        .g1 {
+            background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%);
+            animation: moveVertical 30s ease infinite;
+        }
+
+        .g2 {
+            background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 50%);
+            transform-origin: calc(50% - 400px);
+            animation: moveInCircle 20s reverse infinite;
+        }
+
+        .g3 {
+            background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 50%);
+            transform-origin: calc(50% + 400px);
+            animation: moveInCircle 40s linear infinite;
+        }
+
+        .g4 {
+            background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 50%);
+            transform-origin: calc(50% - 200px);
+            animation: moveHorizontal 40s ease infinite;
+        }
+
+        .g5 {
+            background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 50%);
+            width: calc(var(--circle-size)*2);
+            height: calc(var(--circle-size)*2);
+            transform-origin: calc(50% - 800px) calc(50% + 200px);
+            animation: moveInCircle 20s ease infinite;
+        }
+
+        .interactive {
+            position: absolute;
+            background: radial-gradient(circle at center, rgba(var(--color-interactive), 0.8) 0, rgba(var(--color-interactive), 0) 50%);
+            mix-blend-mode: var(--blending);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        @keyframes moveVertical {
+            0% { transform: translateY(-50%); }
+            50% { transform: translateY(50%); }
+            100% { transform: translateY(-50%); }
+        }
+
+        @keyframes moveInCircle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes moveHorizontal {
+            0% { transform: translateX(-50%) translateY(-10%); }
+            50% { transform: translateX(50%) translateY(10%); }
+            100% { transform: translateX(-50%) translateY(-10%); }
+        }
+
+        .button-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .button-container a {
+            position: relative;
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 0 15px;
+            color: #03e9f4;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: 0.5s;
+            letter-spacing: 4px;
+            overflow: hidden;
+            font-family: 'Raleway', sans-serif;
+            font-weight: bold;
+        }
+
+        .button-container a:hover {
+            background: #03e9f4;
+            color: #050801;
+            box-shadow: 0 0 5px #03e9f4,
+                        0 0 25px #03e9f4,
+                        0 0 50px #03e9f4,
+                        0 0 200px #03e9f4;
+            -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+        }
+
+        .button-container a span {
+            position: absolute;
+            display: block;
+        }
+
+        .button-container a span:nth-child(1) {
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #03e9f4);
+            animation: animate1 1s linear infinite;
+        }
+
+        .button-container a span:nth-child(2) {
+            top: -100%;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #03e9f4);
+            animation: animate2 1s linear infinite;
+            animation-delay: 0.25s;
+        }
+
+        .button-container a span:nth-child(3) {
+            bottom: 0;
+            right: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(270deg, transparent, #03e9f4);
+            animation: animate3 1s linear infinite;
+            animation-delay: 0.5s;
+        }
+
+        .button-container a span:nth-child(4) {
+            bottom: -100%;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(360deg, transparent, #03e9f4);
+            animation: animate4 1s linear infinite;
+            animation-delay: 0.75s;
+        }
+
+        @keyframes animate1 {
+            0% { left: -100%; }
+            50%,100% { left: 100%; }
+        }
+
+        @keyframes animate2 {
+            0% { top: -100%; }
+            50%,100% { top: 100%; }
+        }
+
+        @keyframes animate3 {
+            0% { right: -100%; }
+            50%,100% { right: 100%; }
+        }
+
+        @keyframes animate4 {
+            0% { bottom: -100%; }
+            50%,100% { bottom: 100%; }
+        }
+
+        .car-section img {
+            border: 3px solid transparent;
+            border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 30;
+            animation: borderRotate var(--d) linear infinite forwards;
+        }
+
+        @keyframes borderRotate {
+            100% {
+                --angle: 420deg;
+            }
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+        }
+
+        h1, h3 {
+            margin: 15px 0;
+        }
+
+        .car-section {
+            margin: 20px 0;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        img {
+            width: 700px;
+            height: 400px;
+            border-radius: 5px;
+        }
+
+        h2 a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        h2 a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icons img {
+            width: 32px;
+            height: 32px;
+            margin: 0 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <svg style="display: none">
+            <defs>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+                    <feColorMatrix in="blur" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"/>
+                </filter>
+            </defs>
+        </svg>
+        <div class="gradients-container">
+            <div class="g1"></div>
+            <div class="g2"></div>
+            <div class="g3"></div>
+            <div class="g4"></div>
+            <div class="g5"></div>
+            <div class="interactive"></div>
+        </div>
+    </div>
+
+    <header>
+        <img src="images/logo.jpg" class="logo" alt="Логотип Vendetta">
+        <div class="button-container">
+            <a href="index.html"><span></span><span></span><span></span><span></span>ГЛАВНАЯ</a>
+            <a href="avto.html"><span></span><span></span><span></span><span></span>АВТОМОБИЛИ</a>
+            <a href="obrende.html"><span></span><span></span><span></span><span></span>О БРЕНДЕ</a>
+            <a href="men.html"><span></span><span></span><span></span><span></span>МЕНЮ</a>
+            <a href="конт.html"><span></span><span></span><span></span><span></span>КОНТАКТЫ</a>
+            <a href="рег.html"><span></span><span></span><span></span><span></span>РЕГИСТРАЦИЯ</a>
+        </div>
+        <h1>МОДЕЛЬНЫЙ РЯД Vendetta</h1>
+        <h3>Компания Vendetta основана в 2025 году в сердце Италии любителями скорости и дизайна. Мы стремимся создать автомобили, которые не только впечатляют, но и превращают каждую поездку в незабываемое приключение.</h3>
+    </header>
+
+    <main>
+        <div class="car-section">
+            <h2><a href="url_raptor.html" class='raptor'>Vendetta Raptor</a></h2>
+            <img src="https://avatars.mds.yandex.net/i?id=d39658262dd28e2da8bce47884b40bd4da0e0051-3826599-images-thumbs&n=13" alt="Vendetta Raptor">
+            <h3>Vendetta Raptor представляет собой сочетание мощности и элегантности, ориентированное на активных водителей и семьи, стремящиеся к комфортному и безопасному путешествию. Его современные технологии, качественная отделка и высокие характеристики делают его отличным выбором в своем сегменте.</h3>
+        </div>
+
+        <div class="car-section">
+            <h2><a href="url_nomad.html" class='Nomad'>Vendetta Nomad</a></h2>
+            <img src="https://images.drive.ru/i/0/5e1849c3ec05c4302e0000ac.jpg" alt="Vendetta Nomad">
+            <h3>Vendetta Nomad — это высококачественный, мощный и удобный автомобиль, заслуживающий внимания.</h3>
+        </div>
+
+        <div class="car-section">
+            <h2><a href="url_vortex.html" class='Vortex'>Vendetta Vortex</a></h2>
+            <img src="https://www.zr.ru/d/story/ea/904938/006.jpg" alt="Vendetta Vortex">
+            <h3>Vendetta Vortex — это не просто автомобиль, а настоящий компаньон для тех, кто стремится к новым приключениям и оценит современные технологии.</h3>
+        </div>
+
+        <div class="car-section">
+            <p><b><a href="F.html" class='Vendetta F'><font face="gabriola"><h2>Vendetta F</h2></a></b></p>
+            <img src="https://avtonovostidnya.ru/wp-content/uploads/2023/06/5528c0a0fcc93a48412c551b8bc3004f-e1687838042405-1920x1082.jpg" width="700" height="400" alt="Vendetta Vortex">
+            <h3>Vendetta F - среднеразмерный седан, который предлагает превосходный дизайн, высокий уровень комфорта и многофункциональность.</h3>
+        </div>
+
+        <div class="car-section">
+            <p><b><a href="Santa.html" target='_blank' class='santa'><font face="gabriola"><h2>Vendetta Santa</h2></a></b></p>
+            <img src="https://a.d-cd.net/422bc16s-1920.jpg" width="800" height="500" alt="Vendetta FE">
+            <h3>Vendetta Santa  - большой кроссовер, который отличается высоким уровнем комфорта, безопасности и функциональности.</h3>
+        </div>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <div>
+                <p>Телефон: +7-555-555-55-55</p>
+                <p>Поддержка: 8-888-888-88-88</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="https://vk.com/feed" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/145/145813.png" alt="VK">
+            </a>
+            <a href="http://www.facebook.com.vn/" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook">
+            </a>
+            <a href="https://tiktok.com" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046126.png" alt="TikTok">
+            </a>
+        </div>
+        <p>© 2025 Vendetta. Все права защищены</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const interBubble = document.querySelector('.interactive');
+            let curX = 0;
+            let curY = 0;
+            let tgX = 0;
+            let tgY = 0;
+
+            const move = () => {
+                curX += (tgX - curX) / 20;
+                curY += (tgY - curY) / 20;
+                interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round

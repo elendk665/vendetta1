@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Gradient with Business Card</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+	
+  body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #001119;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+
+        .core-loader {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .digital-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid #00ff9d;
+            box-shadow: 0 0 30px #00ff9d33;
+            animation: rotate 5s linear infinite;
+        }
+
+        .hex-grid {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            left: 5%;
+            top: 5%;
+            background-image: 
+                linear-gradient(150deg, #00ff9d33 10%, transparent 10%),
+                linear-gradient(210deg, #00ff9d33 10%, transparent 10%),
+                linear-gradient(30deg, #00ff9d33 10%, transparent 10%);
+            background-size: 20px 20px;
+            animation: grid-pulse 2s infinite;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            animation: particle-spin 20s linear infinite;
+        }
+
+        .particles::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #00ff9d;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            box-shadow: 
+                0 0 50px 10px #00ff9d,
+                -60px -80px 0 -3px #00ff9d33,
+                100px -40px 0 -3px #00ff9d33,
+                -80px 100px 0 -3px #00ff9d33;
+            animation: core-pulse 1.5s ease-in-out infinite;
+        }
+
+        .percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff9d;
+            font-size: 3em;
+            text-shadow: 0 0 15px #00ff9d;
+            font-weight: bold;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes core-pulse {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+
+        @keyframes grid-pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
+        }
+
+        @keyframes particle-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            position: absolute;
+            bottom: -40px;
+            width: 100%;
+            text-align: center;
+            color: #00ff9d;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            animation: text-glitch 2s infinite;
+        }
+
+        @keyframes text-glitch {
+            0% { text-shadow: 3px 0 0 #ff003c; }
+            95% { text-shadow: 3px 0 0 #ff003c; }
+            96% { text-shadow: -3px 0 0 #ff003c; }
+            100% { text-shadow: -3px 0 0 #ff003c; }
+        }
+
+
+    :root {
+      --color-bg1: rgb(8, 10, 15);
+      --color-bg2: rgb(0, 17, 32);
+      --color1: 18, 113, 255;
+      --color2: 107, 74, 255;
+      --color3: 100, 100, 255;
+      --color4: 50, 160, 220;
+      --color5: 80, 47, 122;
+      --color-interactive: 140, 100, 255;
+      --circle-size: 80%;
+      --blending: hard-light;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      outline: none;
+      list-style: none;
+      text-decoration: none;
+      box-sizing: border-box;
+      color: #FFF;
+      background: transparent;
+      border: none;
+    }
+
+    html, body {
+      font-family: 'Dongle', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background: #FFF;
+      font-family: 'Montserrat', sans-serif;
+      overflow: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+    }
+
+    .gradient-bg {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+      top: 0;
+      left: 0;
+    }
+
+    .gradient-bg .svgBlur {
+      display: none;
+    }
+
+    .gradient-bg .noiseBg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      mix-blend-mode: soft-light;
+      opacity: 0.3;
+    }
+
+    .gradients-container {
+      filter: url(#goo) blur(40px);
+      width: 100%;
+      height: 100%;
+    }
+
+    .g1, .g2, .g3, .g4, .g5 {
+      position: absolute;
+      mix-blend-mode: var(--blending);
+      width: var(--circle-size);
+      height: var(--circle-size);
+      top: calc(50% - var(--circle-size) / 2);
+      left: calc(50% - var(--circle-size) / 2);
+      opacity: 1;
+    }
+
+    .g1 {
+      background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%) no-repeat;
+      animation: moveVertical 30s ease infinite;
+    }
+
+    .g2 {
+      background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 50%) no-repeat;
+      transform-origin: calc(50% - 400px);
+      animation: moveInCircle 20s reverse infinite;
+    }
+
+    .g3 {
+      background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 50%) no-repeat;
+      top: calc(50% - var(--circle-size) / 2 + 200px);
+      left: calc(50% - var(--circle-size) / 2 - 500px);
+      transform-origin: calc(50% + 400px);
+      animation: moveInCircle 40s linear infinite;
+    }
+
+    .g4 {
+      background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 50%) no-repeat;
+      transform-origin: calc(50% - 200px);
+      animation: moveHorizontal 40s ease infinite;
+      opacity: 0.7;
+    }
+
+    .g5 {
+      background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 50%) no-repeat;
+      width: calc(var(--circle-size) * 2);
+      height: calc(var(--circle-size) * 2);
+      top: calc(50% - var(--circle-size));
+      left: calc(50% - var(--circle-size));
+      transform-origin: calc(50% - 800px) calc(50% + 200px);
+      animation: moveInCircle 20s ease infinite;
+    }
+
+    .interactive {
+      position: absolute;
+      background: radial-gradient(circle at center, rgba(var(--color-interactive), 0.8) 0, rgba(var(--color-interactive), 0) 50%) no-repeat;
+      mix-blend-mode: var(--blending);
+      width: 100%;
+      height: 100%;
+      top: -50%;
+      left: -50%;
+      opacity: 0.7;
+    }
+
+    .business-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 427px;
+      width: 320px;
+      perspective: 1000;
+      z-index: 10;
+    }
+
+    .business-card:hover .flipper,
+    .business-card.hover .flipper {
+      transform: rotateY(180deg) rotateZ(90deg);
+    }
+
+    .flipper {
+      transition: 0.6s;
+      transform-style: preserve-3d;
+      position: relative;
+      transform-origin: center 160px;
+    }
+
+    .front,
+    .back {
+      backface-visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 427px;
+      width: 320px;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.75);
+    }
+
+    .front {
+      background-color: white;
+      z-index: 0;
+    }
+
+    .front:before,
+    .front:after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-width: 160px;
+      border-style: solid;
+      border-color: transparent;
+    }
+
+    .front:before {
+      border-top-color: #288FBD;
+      border-left-color: #288FBD;
+      z-index: 2;
+    }
+
+    .front:after {
+      border-top-color: #005D8C;
+      border-right-color: #005D8C;
+    }
+
+    .front .name {
+      position: absolute;
+      bottom: 68.5px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .front .name span {
+      display: block;
+      font-size: 40px;
+      line-height: 45px;
+      background: linear-gradient(45deg, #ffd700, #c5a642, #ffd700);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shine 2s infinite;
+    }
+
+    @keyframes shine {
+      0% { background-position: -200%; }
+      100% { background-position: 200%; }
+    }
+
+    .back {
+      background-color: #005D8C;
+      color: white;
+      width: 427px;
+      height: 320px;
+      box-sizing: border-box;
+      transform: rotateY(180deg) rotateZ(90deg);
+    }
+	.button-container {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 1000;
+    }
+
+    .button-container a {
+      position: relative;
+      padding: 15px 30px;
+      margin: 0 15px;
+      color: #03e9f4;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: 0.5s;
+      letter-spacing: 4px;
+      overflow: hidden;
+      font-family: 'Raleway', sans-serif;
+      font-weight: bold;
+      background: transparent;
+      border: none;
+    }
+
+    .button-container a:hover {
+      background: #03e9f4;
+      color: #050801;
+      box-shadow: 0 0 5px #03e9f4,
+                  0 0 25px #03e9f4,
+                  0 0 50px #03e9f4,
+                  0 0 200px #03e9f4;
+      -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+    }
+
+    .button-container a span {
+      position: absolute;
+      display: block;
+    }
+
+    .button-container a span:nth-child(1) {
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #03e9f4);
+      animation: animate1 1s linear infinite;
+    }
+
+    @keyframes animate1 {
+      0% { left: -100%; }
+      50%,100% { left: 100%; }
+    }
+
+    .button-container a span:nth-child(2) {
+      top: -100%;
+      right: 0;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, transparent, #03e9f4);
+      animation: animate2 1s linear infinite;
+      animation-delay: 0.25s;
+    }
+
+    @keyframes animate2 {
+      0% { top: -100%; }
+      50%,100% { top: 100%; }
+    }
+
+    .button-container a span:nth-child(3) {
+      bottom: 0;
+      right: -100%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(270deg, transparent, #03e9f4);
+      animation: animate3 1s linear infinite;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes animate3 {
+      0% { right: -100%; }
+      50%,100% { right: 100%; }
+    }
+
+    .button-container a span:nth-child(4) {
+      bottom: -100%;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(360deg, transparent, #03e9f4);
+      animation: animate4 1s linear infinite;
+      animation-delay: 0.75s;
+    }
+
+    @keyframes animate4 {
+      0% { bottom: -100%; }
+      50%,100% { bottom: 100%; }
+    }
+
+    .back .container-sm {
+      float: left;
+      width: 40%;
+      height: 100%;
+      position: relative;
+    }
+
+    .back .container-lg {
+      float: left;
+      width: 60%;
+      margin-top: 2rem;
+    }
+
+    .back .logo-white {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      display: block;
+      margin: -60px -60px;
+    }
+
+    .back .logo-white:before,
+    .back .logo-white:after {
+      display: block;
+      content: '';
+      position: absolute;
+      border-style: solid;
+      border-color: transparent;
+    }
+
+    .back .logo-white:before {
+      top: 0;
+      left: 0;
+      border-width: 60px;
+      border-top-color: white;
+      border-left-color: white;
+      z-index: 2;
+    }
+
+    .back .logo-white:after {
+      bottom: 0;
+      right: 0;
+      border-width: 56px;
+      border-right-color: white;
+    }
+
+    .back a {
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
+
+    .back a:hover {
+      text-decoration: underline;
+    }
+
+    .back .social {
+      font-size: 1rem;
+      list-style: none;
+      padding: 0;
+    }
+
+    .back .social li {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .back .social li:first-child {
+      margin-top: 1rem;
+    }
+
+    .back .social i {
+      margin-right: 0.5rem;
+    }
+
+    .back .social span {
+      margin-left: 0.5rem;
+    }
+	.button-container a:nth-child(1) { filter: hue-rotate(270deg); }
+    .button-container a:nth-child(2) { filter: hue-rotate(110deg); }
+    .button-container a:nth-child(3) { filter: hue-rotate(180deg); }
+    .button-container a:nth-child(4) { filter: hue-rotate(300deg); }
+  </style>
+</head>
+<body>
+ <div class="core-loader">
+        <div class="digital-circle"></div>
+        <div class="hex-grid"></div>
+        <div class="particles"></div>
+        <div class="percentage">0%</div>
+        <div class="loading-text">System Core Activation</div>
+    </div>
+  <div class="gradient-bg">
+    <!-- Добавленная панель навигации -->
+    <div class="button-container">
+      <a href="index.html"><span></span><span></span><span></span><span></span>ГЛАВНАЯ</a>
+      <a href="avto.html"><span></span><span></span><span></span><span></span>АВТОМОБИЛИ</a>
+      <a href="obrende.html"><span></span><span></span><span></span><span></span>О БРЕНДЕ</a>
+      <a href="men.html"><span></span><span></span><span></span><span></span>МЕНЮ</a>
+    </div>
+<body>
+  <div class="gradient-bg">
+    <svg viewBox="0 0 100vw 100vw" xmlns='http://www.w3.org/2000/svg' class="noiseBg">
+      <filter id='noiseFilterBg'>
+        <feTurbulence type='fractalNoise' baseFrequency='0.6' stitchTiles='stitch' />
+      </filter>
+      <rect width='100%' height='100%' preserveAspectRatio="xMidYMid meet" filter='url(#noiseFilterBg)' />
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="svgBlur">
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+      </defs>
+    </svg>
+    <div class="gradients-container">
+      <div class="g1"></div>
+      <div class="g2"></div>
+      <div class="g3"></div>
+      <div class="g4"></div>
+      <div class="g5"></div>
+      <div class="interactive"></div>
+    </div>
+    <div class="business-card" ontouchstart="this.classList.toggle('hover');">
+      <div class="flipper">
+        <div class="front">
+          <div class="name">
+            <span>Vendetta</span>
+          </div>
+        </div>
+        <div class="back">
+          <div class="container-sm">
+            <figure class="logo-white"></figure>
+          </div>
+          <div class="container-lg">
+            <ul class="social">
+              <li>
+                <i class="fas fa-phone"></i>
+                <span>Phone</span>
+                <a href="tel:+1234567890">+7-555-555-55-55</a>
+              </li>
+              <li>
+                <a href="mailto:inf@vendetta.com">
+                  <i class="fas fa-envelope"></i>
+                  <span>Email</span>
+                  <span>inf@vendetta.com</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://tiktok.com" target="_blank">
+                  <i class="fab fa-tiktok"></i>
+                  <span>TikTok</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://facebook.com" target="_blank">
+                  <i class="fab fa-facebook"></i>
+                  <span>Facebook</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://vk.com" target="_blank">
+                  <i class="fab fa-vk"></i>
+                  <span>ВКонтакте</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+        let percentageElement = document.querySelector('.percentage');
+        let start = Date.now();
+        let duration = 5000; // 5 seconds
+
+        function updatePercentage() {
+            let passed = Date.now() - start;
+            let progress = Math.min(passed / duration * 100, 100);
+            percentageElement.textContent = Math.floor(progress) + '%';
+            
+            if (progress < 100) {
+                requestAnimationFrame(updatePercentage);
+            } else {
+                percentageElement.style.textShadow = '0 0 30px #00ff9d';
+                document.querySelector('.loading-text').textContent = 'CORE ONLINE';
+            }
+        }
+
+        updatePercentage();
+    </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const interBubble = document.querySelector('.interactive');
+      let curX = 0;
+      let curY = 0;
+      let tgX = 0;
+      let tgY = 0;
+
+      const move = () => {
+        curX += (tgX - curX) / 20;
+        curY += (tgY - curY) / 20;
+        interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+        requestAnimationFrame(move);
+      };
+
+      window.addEventListener('mousemove', (event) => {
+        tgX = event.clientX;
+        tgY = event.clientY;
+      });
+
+      move();
+    });
+  </script>
+</body>
+</html>

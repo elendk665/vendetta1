@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Card</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+
+        body {
+            background-image: url(https://subtlepatterns.com/patterns/gplaypattern.png);
+            background-position: center center;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .business-card {
+            height: 427px;
+            width: 320px;
+            perspective: 1000;
+        }
+
+        .business-card:hover .flipper,
+        .business-card.hover .flipper {
+            transform: rotateY(180deg) rotateZ(90deg);
+        }
+
+        .flipper {
+            transition: 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+            transform-origin: center 160px;
+        }
+
+        .front,
+        .back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 427px;
+            width: 320px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.75);
+        }
+
+        .front {
+            background-color: white;
+            z-index: 0;
+        }
+
+        .front:before,
+        .front:after {
+            display: block;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-width: 160px;
+            border-style: solid;
+            border-color: transparent;
+        }
+
+        .front:before {
+            border-top-color: #288FBD;
+            border-left-color: #288FBD;
+            z-index: 2;
+        }
+
+        .front:after {
+            border-top-color: #005D8C;
+            border-right-color: #005D8C;
+        }
+
+        .front .name {
+            position: absolute;
+            bottom: 68.5px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .front .name span {
+            display: block;
+            font-size: 40px;
+            line-height: 45px;
+            background: linear-gradient(45deg, #ffd700, #c5a642, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+        }
+
+        .back {
+            background-color: #005D8C;
+            color: white;
+            width: 427px;
+            height: 320px;
+            box-sizing: border-box;
+            transform: rotateY(180deg) rotateZ(90deg);
+        }
+
+        .back .container-sm {
+            float: left;
+            width: 40%;
+            height: 100%;
+            position: relative;
+        }
+
+        .back .container-lg {
+            float: left;
+            width: 60%;
+            margin-top: 2rem;
+        }
+
+        .back .logo-white {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            display: block;
+            margin: -60px -60px;
+        }
+
+        .back .logo-white:before,
+        .back .logo-white:after {
+            display: block;
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-color: transparent;
+        }
+
+        .back .logo-white:before {
+            top: 0;
+            left: 0;
+            border-width: 60px;
+            border-top-color: white;
+            border-left-color: white;
+            z-index: 2;
+        }
+
+.back .logo-white:after {
+            bottom: 0;
+            right: 0;
+            border-width: 56px;
+            border-right-color: white;
+        }
+
+        .back a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        .back a:hover {
+            text-decoration: underline;
+        }
+
+        .back .social {
+            font-size: 1.25rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .back .social li {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .back .social li:first-child {
+            margin-top: 2rem;
+        }
+
+        .back .social i {
+            margin-right: 0.5rem;
+        }
+
+        .back .social span {
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="business-card" ontouchstart="this.classList.toggle('hover');">
+        <div class="flipper">
+            <div class="front">
+                <div class="name">
+                    <span>Vendetta</span>
+                </div>
+            </div>
+            <div class="back">
+                <div class="container-sm">
+                    <figure class="logo-white"></figure>
+                </div>
+                <div class="container-lg">
+                    <ul class="social">
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>Phone</span>
+                            <a href="tel:+1234567890">+1 (234) 567-890</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>Email</span>
+                            <a href="mailto:inf@vendetta.com">inf@vendetta.com</a>
+                        </li>
+                        <li>
+                            <i class="fab fa-tiktok"></i>
+                            <span>TikTok</span>
+                            <a href="https://tiktok.com."></a>
+                        </li>
+                        <li>
+                            <i class="fab fa-facebook"></i>
+                            <span>Facebook</span>
+                            <a href="https://facebook.com."></a>
+                        </li>
+                        <li>
+                            <i class="fab fa-vk"></i>
+                            <span>ВКонтакте</span>
+                            <a href="https://vk.com."></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>  

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Vendetta</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: black; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const text = 'VENDETTA';
+        const fontSize = 150;
+        const stars = [];
+        const starCount = 1000;
+        const mouse = { x: 0, y: 0, isActive: false };
+
+        function createStars() {
+            ctx.font = `${fontSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'white';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                if (data[i + 3] > 128 && Math.random() < 0.1) {
+                    const x = (i / 4) % canvas.width;
+                    const y = Math.floor((i / 4) / canvas.width);
+                    stars.push({
+                        x: x - canvas.width / 2,
+                        y: y - canvas.height / 2,
+                        size: Math.random() * 2 + 1,
+                        baseX: x - canvas.width / 2,
+                        baseY: y - canvas.height / 2,
+                        color: `rgba(255, 255, 255, ${Math.random()})`
+                    });
+                }
+            }
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+
+            stars.forEach(star => {
+                const dx = star.x - (mouse.x - canvas.width / 2);
+                const dy = star.y - (mouse.y - canvas.height / 2);
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (mouse.isActive && distance < 100) {
+                    const angle = Math.atan2(dy, dx);
+                    const force = 100 / distance;
+                    star.x += Math.cos(angle) * force;
+                    star.y += Math.sin(angle) * force;
+                } else {
+                    star.x += (star.baseX - star.x) * 0.1;
+                    star.y += (star.baseY - star.y) * 0.1;
+                }
+
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fillStyle = star.color;
+                ctx.fill();
+            });
+
+            ctx.restore();
+        }
+
+        function animate() {
+            drawStars();
+            requestAnimationFrame(animate);
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            mouse.isActive = true;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            mouse.isActive = false;
+        });
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars.length = 0;
+            createStars();
+        });
+
+        createStars();
+        animate();
+    </script>
+</body>
+</html>
